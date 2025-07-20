@@ -1,0 +1,33 @@
+services:
+  api:
+    build: ./api/web
+    ports:
+      - "9101:9101"
+    volumes:
+      - tle:/data
+  # tcp:
+  #   build: ./api/tcp/server
+  #   ports:
+  #     - "65432:65432"
+  #   volumes:
+  #     - tle:/data
+  tle-comm-sats:
+    build:
+      context: ./scrapers/comm
+      additional_contexts:
+        scrapers: ./scrapers
+    ports:
+      - "9102:9102"
+    volumes:
+      - tle:/data
+  tle-nav-sats:
+    build:
+      context: ./scrapers/nav
+      additional_contexts:
+        scrapers: ./scrapers
+    ports:
+      - "9103:9103"
+    volumes:
+      - tle:/data
+volumes:
+  tle:

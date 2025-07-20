@@ -1,0 +1,15 @@
+services:
+  api:
+    build: ./web
+    ports:
+      - "9101:9101"
+    volumes:
+      - tle:/data
+  tcp:
+    build: ./tcp/server
+    ports:
+      - "65432:65432"
+    volumes:
+      - tle:/data
+volumes:
+  tle:

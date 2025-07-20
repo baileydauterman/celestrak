@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+faker
+requests
+websockets
+plotly
+beyond
+matplotlib

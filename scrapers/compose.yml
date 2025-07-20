@@ -1,0 +1,21 @@
+services:
+  tle-comm-sats:
+    build:
+      context: ./comm
+      additional_contexts:
+        scrapers: ./
+    ports:
+      - "9102:9102"
+    volumes:
+      - tle:/data
+  tle-nav-sats:
+    build:
+      context: ./nav
+      additional_contexts:
+        scrapers: ./
+    ports:
+      - "9103:9103"
+    volumes:
+      - tle:/data
+volumes:
+  tle:
