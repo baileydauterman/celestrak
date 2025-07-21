@@ -1,4 +1,6 @@
 import os
+import sys
+import time
 import requests
 from enum import Enum
 from pathlib import Path
@@ -118,3 +120,36 @@ class CelestrakScraper():
 
     def __build_url__(self):
         return f"{self.CELESTRAK_ENDPOINT}?GROUP={self.constellation_group_name}&FORMAT={self.file_format}"
+
+if __name__ == "__main__":
+    args = sys.argv[1:]
+    if len(args) != 1:
+        raise Exception ("arguments should be comma separated\nUsage: celstrak misc|science")
+    
+    print(f"Executing with args: {args}")
+    args = args[0].split(',')
+
+    while True:
+        for a in args:
+            if a == 'misc':
+                sats = CelestrakMiscellaneousSatellites
+            elif a == 'science':
+                sats = CelestrakScientificSatellites
+            elif a == 'special-interest':
+                sats = CelestrakSpecialInterestSatellites
+            elif a == 'weather':
+                sats = CelestrakWeatherAndEarthResourcesSatellites
+            elif a == 'nav':
+                sats = CelestrakNavigationSatellites
+            elif a == 'comm':
+                sats = CelestrakCommunicationSatellites 
+            
+            for sat in sats:
+                scraper = CelestrakScraper(
+                    sat,
+                    CelestrakFileFormats.TWO_LINE_ELEMENT,
+                    f"/data/{a}"
+                )
+                scraper.get_and_write()
+        
+        time.sleep(86400)

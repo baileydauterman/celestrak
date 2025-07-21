@@ -17,5 +17,14 @@ services:
       - "9103:9103"
     volumes:
       - tle:/data
+  tle-misc-sats:
+    build:
+      context: ./misc
+      additional_contexts:
+        scrapers: ./
+    ports:
+      - "9104:9104"
+    volumes:
+      - tle:/data
 volumes:
   tle:
