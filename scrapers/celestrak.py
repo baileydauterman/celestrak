@@ -16,70 +16,70 @@ class CelestrakFileFormats(Enum):
     CSV = 'csv'
 
 class CelestrakSpecialInterestSatellites(Enum):
-    LAST_30_DAY_LAUNCHES = 'last-30-days'
-    SPACE_STATIONS = 'stations'
-    BRIGHTEST = 'visual'
-    ACTIVE = 'active'
-    ANALYST_SATELLITES = 'analyst'
-    RUSSIAN_ASAT_TEST_DEBRIS = 'cosmos-1408-debris'
-    CHINESE_ASAT_TEST_DEBRIS = 'fengyum-1c-debris'
-    IRIDIUM_33_DEBRIS = 'iridium-33-debris'
-    COSMOS_2251_DEBRIS = 'cosmos-2251-debris'
+    LAST_30_DAY_LAUNCHES = ("GROUP", 'last-30-days')
+    SPACE_STATIONS = ("GROUP", 'stations')
+    BRIGHTEST = ("GROUP", 'visual')
+    ACTIVE = ("GROUP", 'active')
+    ANALYST_SATELLITES = ("GROUP", 'analyst')
+    RUSSIAN_ASAT_TEST_DEBRIS = ("GROUP", 'cosmos-1408-debris')
+    CHINESE_ASAT_TEST_DEBRIS = ("GROUP", 'fengyum-1c-debris')
+    IRIDIUM_33_DEBRIS = ("GROUP", 'iridium-33-debris')
+    COSMOS_2251_DEBRIS = ("GROUP", 'cosmos-2251-debris')
 
 class CelestrakWeatherAndEarthResourcesSatellites(Enum):
-    WEATHER = 'weather'
-    NOAA = 'noaa'
-    GOES = 'goes'
-    EARTH_RESOURCES = 'resources'
-    SEARCH_AND_RESCUE = 'sarsat'
-    DISASTER_MONITORING = 'dmc'
-    TRACKING_AND_DATA_RELAY_SATELLITE_SYSTEM = 'tdrss'
-    ARGOS_DATA_COLLECTION_SYSTEM = 'argos'
-    PLANET = 'planet'
-    SPIRE = 'spire'
+    WEATHER = ("GROUP", 'weather')
+    NOAA = ("GROUP", 'noaa')
+    GOES = ("GROUP", 'goes')
+    EARTH_RESOURCES = ("GROUP", 'resources')
+    SEARCH_AND_RESCUE = ("GROUP", 'sarsat')
+    DISASTER_MONITORING = ("GROUP", 'dmc')
+    TRACKING_AND_DATA_RELAY_SATELLITE_SYSTEM = ("GROUP", 'tdrss')
+    ARGOS_DATA_COLLECTION_SYSTEM = ("GROUP", 'argos')
+    PLANET = ("GROUP", 'planet')
+    SPIRE = ("GROUP", 'spire')
 
 class CelestrakCommunicationSatellites(Enum):
-    ACTIVE_GEO = 'geo'
-    # GEO_PROTECTED_ZONE = 'gpz' this is not a `GROUP` it's `SPECIAL`
-    # GEO_PROTECTED_ZONE_PLUS = 'gpz-plus' this is not a `GROUP` it's `SPECIAL`
-    INTELSAT = 'intelsat'
-    SES = 'ses'
-    EUTELSAT = 'eutelsat'
-    TELESAT = 'telesat'
-    STARLINK = 'starlink'
-    ONEWEB = 'oneweb'
-    QIANFAN = 'qianfan'
-    HULIANWANG = 'hulianwang'
-    KUIPER = 'kuiper'
-    IRIDIUM_NEXT = 'iridium-NEXT'
-    ORBCOMM = 'orbcomm'
-    GLOBALSTAR = 'globalstar'
-    AMATEUR_RADIO = 'amateur'
-    SATNOGS = 'satnogs'
-    EXPERIMENTAL_COMM = 'x-comm'
-    OTHER_COMM = 'other-comm'
+    ACTIVE_GEO = ("GROUP", 'geo')
+    GEO_PROTECTED_ZONE = ("SPECIAL", 'gpz')
+    GEO_PROTECTED_ZONE_PLUS =("SPECIAL", 'gpz-plus')
+    INTELSAT = ("GROUP", 'intelsat')
+    SES = ("GROUP", 'ses')
+    EUTELSAT = ("GROUP", 'eutelsat')
+    TELESAT = ("GROUP", 'telesat')
+    STARLINK = ("GROUP", 'starlink')
+    ONEWEB = ("GROUP", 'oneweb')
+    QIANFAN = ("GROUP", 'qianfan')
+    HULIANWANG = ("GROUP", 'hulianwang')
+    KUIPER = ("GROUP", 'kuiper')
+    IRIDIUM_NEXT = ("GROUP", 'iridium-NEXT')
+    ORBCOMM = ("GROUP", 'orbcomm')
+    GLOBALSTAR = ("GROUP", 'globalstar')
+    AMATEUR_RADIO = ("GROUP", 'amateur')
+    SATNOGS = ("GROUP", 'satnogs')
+    EXPERIMENTAL_COMM = ("GROUP", 'x-comm')
+    OTHER_COMM = ("GROUP", 'other-comm')
 
 class CelestrakNavigationSatellites(Enum):
-    GNSS = 'gnss'
-    GPS_OPERATIONAL = 'gps-ops'
-    GLONASS_OPERATIONAL = 'glo-ops'
-    GALILEO = 'galileo'
-    BEIDOU = 'beidou'
-    SATELLITE_BASED_AUGMENTATION_SYSTEM = 'sbas'
-    NAVY_NAVIGATION_sATELLITE_SYSTEM = 'nnss'
-    RUSSIAN_LEO_NAVIGATION = 'musson'
+    GNSS = ("GROUP", 'gnss')
+    GPS_OPERATIONAL = ("GROUP", 'gps-ops')
+    GLONASS_OPERATIONAL = ("GROUP", 'glo-ops')
+    GALILEO = ("GROUP", 'galileo')
+    BEIDOU = ("GROUP", 'beidou')
+    SATELLITE_BASED_AUGMENTATION_SYSTEM = ("GROUP", 'sbas')
+    NAVY_NAVIGATION_sATELLITE_SYSTEM = ("GROUP", 'nnss')
+    RUSSIAN_LEO_NAVIGATION = ("GROUP", 'musson')
 
 class CelestrakScientificSatellites(Enum):
-    SPACE_AND_EARTH_SCIENCES = 'science'
-    GEODETIC = 'geodetic'
-    ENGINEERING = 'engineering'
-    EDUCATION = 'education'
+    SPACE_AND_EARTH_SCIENCES = ("GROUP",'science')
+    GEODETIC = ("GROUP", 'geodetic')
+    ENGINEERING = ("GROUP", 'engineering')
+    EDUCATION = ("GROUP", 'education')
 
 class CelestrakMiscellaneousSatellites(Enum):
-    MISCELLANEOUS_MILITARY = 'military'
-    RADAR_CALIBRATION = 'radar'
-    CUBE_SATS = 'cubesats'
-    OTHER_SATELLITES = 'other'
+    MISCELLANEOUS_MILITARY = ("GROUP", 'military')
+    RADAR_CALIBRATION = ("GROUP", 'radar')
+    CUBE_SATS = ("GROUP", 'cubesat')
+    OTHER_SATELLITES = ("GROUP", 'other')
     
 
 class CelestrakScraper():
@@ -87,7 +87,8 @@ class CelestrakScraper():
 
     def __init__(self, constellation_group_name: Enum, file_format: CelestrakFileFormats, working_directory: str):
         self.file_format = file_format.value
-        self.constellation_group_name = constellation_group_name.value
+        self.constellation_group_type = constellation_group_name.value[0]
+        self.constellation_group_name = constellation_group_name.value[1]
         self.working_directory = working_directory
         self.__build_file_name__()
 
@@ -119,18 +120,19 @@ class CelestrakScraper():
         self.data_exists = os.path.exists(self.full_file_path)
 
     def __build_url__(self):
-        return f"{self.CELESTRAK_ENDPOINT}?GROUP={self.constellation_group_name}&FORMAT={self.file_format}"
+        return f"{self.CELESTRAK_ENDPOINT}?{self.constellation_group_type}={self.constellation_group_name}&FORMAT={self.file_format}"
 
 if __name__ == "__main__":
     args = sys.argv[1:]
     if len(args) != 1:
-        raise Exception ("arguments should be comma separated\nUsage: celstrak misc|science")
+        raise Exception ("arguments should be comma separated\nUsage: celstrak misc|science|special-interest|weather|nav|comm")
     
     print(f"Executing with args: {args}")
     args = args[0].split(',')
 
     while True:
         for a in args:
+            a = a.strip()
             if a == 'misc':
                 sats = CelestrakMiscellaneousSatellites
             elif a == 'science':
