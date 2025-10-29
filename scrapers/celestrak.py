@@ -2,6 +2,9 @@ import os
 import sys
 import time
 import requests
+import logging
+import argparse
+from logging import Logger
 from enum import Enum
 from pathlib import Path
 from datetime import datetime
@@ -14,6 +17,9 @@ class CelestrakFileFormats(Enum):
     JSON = 'json'
     JSON_PRETTY = 'json-pretty'
     CSV = 'csv'
+
+    def __str__(self):
+        return self.value
 
 class CelestrakSpecialInterestSatellites(Enum):
     LAST_30_DAY_LAUNCHES = ("GROUP", 'last-30-days')
@@ -85,23 +91,25 @@ class CelestrakMiscellaneousSatellites(Enum):
 class CelestrakScraper():
     CELESTRAK_ENDPOINT = "https://celestrak.org/NORAD/elements/gp.php"
 
-    def __init__(self, constellation_group_name: Enum, file_format: CelestrakFileFormats, working_directory: str):
-        self.file_format = file_format.value
-        self.constellation_group_type = constellation_group_name.value[0]
+    def __init__(self, constellation_group_name: Enum, file_format: CelestrakFileFormats, working_directory: str, logger: Logger):
+        self.params = {
+            constellation_group_name.value[0]: constellation_group_name.value[1],
+            "FORMAT": file_format.value
+        }
         self.constellation_group_name = constellation_group_name.value[1]
         self.working_directory = working_directory
+        self.logger = logger
         self.__build_file_name__()
+        self.logger.info("%s", self.params)
 
     def get(self):
         if self.data_exists:
             return False
 
-        url = self.__build_url__()
-        print(url)
-        self.response = requests.get(url)
+        self.response = requests.get(self.CELESTRAK_ENDPOINT, self.params)
 
         if self.response.status_code != 200:
-            raise Exception(f"Unable to retrieve data from: {url}\nReceived status code: {self.response.status_code}")
+            self.logger.error("Unable to retrieve data from: %s\nReceived status code: %s", self.params, self.response.status_code)
 
         return True
 
@@ -114,25 +122,26 @@ class CelestrakScraper():
         self.data_exists = hit_endpoint
 
     def __build_file_name__(self):
-        self.file_name = f"{datetime.now().date().isoformat()}-{self.constellation_group_name}.{self.file_format}"
+        self.file_name = f"{datetime.now().date().isoformat()}-{self.constellation_group_name}.{self.params["FORMAT"]}"
         self.full_file_path = os.path.join(self.working_directory, self.file_name)
         Path(self.full_file_path).parent.mkdir(parents=True, exist_ok=True)
         self.data_exists = os.path.exists(self.full_file_path)
 
-    def __build_url__(self):
-        return f"{self.CELESTRAK_ENDPOINT}?{self.constellation_group_type}={self.constellation_group_name}&FORMAT={self.file_format}"
 
 if __name__ == "__main__":
-    args = sys.argv[1:]
-    if len(args) != 1:
+    parser = argparse.ArgumentParser("celestrak")
+    parser.add_argument("-c", "--constellations", choices=["misc", "science", "special-interest", "weather", "nav", "comm"], action="append", required=True)
+    parser.add_argument("-o", "--output-format", type=CelestrakFileFormats, choices=list(CelestrakFileFormats))
+    opts = parser.parse_args()
+
+    if len(opts.constellations) < 1:
         raise Exception ("arguments should be comma separated\nUsage: celstrak misc|science|special-interest|weather|nav|comm")
     
-    print(f"Executing with args: {args}")
-    args = args[0].split(',')
+    logger = logging.getLogger(__file__)
+    logger.info("Executing with args: %s", opts)
 
     while True:
-        for a in args:
-            a = a.strip()
+        for a in opts.constellations:
             if a == 'misc':
                 sats = CelestrakMiscellaneousSatellites
             elif a == 'science':
@@ -144,13 +153,16 @@ if __name__ == "__main__":
             elif a == 'nav':
                 sats = CelestrakNavigationSatellites
             elif a == 'comm':
-                sats = CelestrakCommunicationSatellites 
+                sats = CelestrakCommunicationSatellites
+            else:
+                continue
             
             for sat in sats:
                 scraper = CelestrakScraper(
                     sat,
-                    CelestrakFileFormats.TWO_LINE_ELEMENT,
-                    f"/data/{a}"
+                    opts.output_format,
+                    f"/data/{a}",
+                    logger
                 )
                 scraper.get_and_write()
         

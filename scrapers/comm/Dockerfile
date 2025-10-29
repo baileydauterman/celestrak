@@ -1,4 +1,4 @@
-FROM python:3-slim
+FROM python:3.10-slim
 WORKDIR /app/misc
 COPY --from=scrapers requirements.txt .
 COPY --from=scrapers celestrak.py .
