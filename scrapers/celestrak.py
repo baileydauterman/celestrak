@@ -132,6 +132,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser("celestrak")
     parser.add_argument("-c", "--constellations", choices=["misc", "science", "special-interest", "weather", "nav", "comm"], required=True, nargs='*')
     parser.add_argument("-o", "--output-format", type=CelestrakFileFormats, choices=list(CelestrakFileFormats))
+    parser.add_argument("-t", "--timeout", type=int, default=86400, required=True)
     opts = parser.parse_args()
 
     if len(opts.constellations) < 1:
@@ -166,4 +167,5 @@ if __name__ == "__main__":
                 )
                 scraper.get_and_write()
         
-        time.sleep(86400)
+        logger.info(f"Sleeping for {opts.timeout} seconds")
+        time.sleep(opts.timeout)
