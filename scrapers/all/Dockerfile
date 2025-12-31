@@ -3,4 +3,4 @@ WORKDIR /app/misc
 COPY --from=scrapers requirements.txt .
 COPY --from=scrapers celestrak.py .
 RUN pip install --no-cache-dir -r requirements.txt
-CMD ["python", "celestrak.py", "-c", "misc", "-o", "json"]
+CMD ["python", "celestrak.py", "-c", "misc", "science", "special-interest", "weather", "nav", "comm", "-o", "json"]

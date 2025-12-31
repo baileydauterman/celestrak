@@ -130,7 +130,7 @@ class CelestrakScraper():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser("celestrak")
-    parser.add_argument("-c", "--constellations", choices=["misc", "science", "special-interest", "weather", "nav", "comm"], action="append", required=True)
+    parser.add_argument("-c", "--constellations", choices=["misc", "science", "special-interest", "weather", "nav", "comm"], required=True, nargs='*')
     parser.add_argument("-o", "--output-format", type=CelestrakFileFormats, choices=list(CelestrakFileFormats))
     opts = parser.parse_args()
 
